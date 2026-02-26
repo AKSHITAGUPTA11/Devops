@@ -1,22 +1,27 @@
 pipeline{
     any agent
     stages{
-        stage("git-pull"){
+        stage('GIT-PULL'){
             steps{
                 git branch: 'main', url: 'https://github.com/AKSHITAGUPTA11/Devops.git' 
             }
         }
-           stage("build"){
+           stage('PLAN'){
             steps{
                 echo "build success"
             }
         }
-             stage("test"){
+           stage('ARPROVE'){
+            steps{
+                echo "build success"
+            }
+        }
+             stage('APPLY'){
             steps{
                 echo "test success"
             }
         }
-             stage("deploy"){
+             stage('DEPLOY'){
             steps{
                 echo "deploy success"
             }
