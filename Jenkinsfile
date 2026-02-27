@@ -1,30 +1,41 @@
-pipeline{
-    any agent
-    stages{
-        stage('GIT-PULL'){
-            steps{
-                git branch: 'main', url: 'https://github.com/AKSHITAGUPTA11/Devops.git' 
+pipeline {
+    agent any
+    
+    stages {
+        
+        stage ('Git-Pull') {
+            steps {
+               git branch: 'main', url: 'https://github.com/AKSHITAGUPTA11/EasyCRUD.git'
             }
         }
-           stage('PLAN'){
-            steps{
-                echo "build success"
+         stage ("Docker--Backend-Build") {
+            steps {
+                sh '''
+                cd backend
+                docker build -t kubesanjay/easy-backend:latest .'''
             }
         }
-           stage('ARPROVE'){
-            steps{
-                echo "build success"
+        stage ("Docker-Frontend-Build") {
+            steps {
+                sh '''
+                pwd
+                cd frontend
+                docker build -t kubesanjay/easy-frontend:latest .'''
             }
         }
-             stage('APPLY'){
-            steps{
-                echo "test success"
+         stage ("Docker-Push") {
+            steps {
+               sh '''
+                docker push kubesanjay/easy-backend:latest
+                docker push kubesanjay/easy-frontend:latest '''
             }
         }
-             stage('DEPLOY'){
-            steps{
-                echo "deploy success"
+         stage ("Deploy") {
+            steps {
+                sh 'kubectl apply -f simple-deploy/. '
             }
         }
+        
     }
+    
 }
